@@ -11,7 +11,7 @@ import {
   //import MapCords from "../components/MapCords";
   import { useEffect } from "react";
   //import maps from '../maps/0.png'
-  import { bounds, map, CRS } from "leaflet";
+  import { bounds, map, CRS, L } from "leaflet";
 
   
 
@@ -34,22 +34,23 @@ import {
     };
   
 
-
+    const simpleCRS = CRS.Simple;
     var imageOv = useRef()
     var mapRef = useRef()
-    const imageBounds = [[0,0],[1943, 2907]]
+    const imageBounds = [[0,0],[1943, 2907]]//[1943, 2907]
     
     useEffect(() => {
       if (mapRef.current) {
         mapRef.current.fitBounds(imageBounds);
+        mapRef.current.setView( [70, 120], 1);
       }
     }, imageBounds);
 
     return (
       <Box align="center" marginTop="1em" fontFamily="Syne">
         <Button onClick={test}>Tests</Button>
-        <MapContainer center={[500,500]} zoom={1} ref={mapRef} style={{height:500+'px'}}>
-          <ImageOverlay url={"maps/0.png"} bounds={imageBounds} ref={imageOv} ></ImageOverlay>
+        <MapContainer crs={simpleCRS} center={[500,500]} zoom={0}  ref={mapRef} style={{height:500+'px'}}>
+          <ImageOverlay url={"maps/0.png"} bounds={imageBounds}  ref={imageOv} ></ImageOverlay>
         </MapContainer>
       </Box>
     );
