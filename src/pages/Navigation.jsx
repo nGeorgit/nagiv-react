@@ -42,14 +42,14 @@ import {
     useEffect(() => {
       if (mapRef.current) {
         mapRef.current.fitBounds(imageBounds);
-        mapRef.current.setView( [70, 120], 1);
+        //mapRef.current.setView( [70, 120], -5);
       }
     }, imageBounds);
 
     return (
       <Box align="center" marginTop="1em" fontFamily="Syne">
         <Button onClick={test}>Tests</Button>
-        <MapContainer crs={simpleCRS} center={[500,500]} zoom={0}  ref={mapRef} style={{height:500+'px'}}>
+        <MapContainer crs={simpleCRS} center={[500,500]} zoom={0} minZoom={-5}  ref={mapRef} style={{height:500+'px'}}>
           <ImageOverlay url={"maps/0.png"} bounds={imageBounds}  ref={imageOv} ></ImageOverlay>
         </MapContainer>
       </Box>
