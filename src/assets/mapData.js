@@ -1,6 +1,4 @@
-import { mapData } from "../assets/mapData.js";
-
-const mapData = {
+export const mapData = {
     "floors": {
       "0": {
         "name": "0",
