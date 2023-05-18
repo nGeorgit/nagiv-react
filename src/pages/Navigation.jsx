@@ -15,25 +15,17 @@ import {
 
   
 
-  function test() {
-    console.log('sad')
-    return (
-      <h1>Hello</h1>
-    );
-  }
   
   function NavPage() {
-    const [title, setTitle] = useState("");
+    const [curMap, setCurMap] = useState("0");
     const [value, setValue] = useState("");
     const [sampleObject, setSampleObject] = useState([]);
 
     const handleChange = (e) => {
-      setValue(e.target.value);
-      setTitle("");
-      document.getElementById("title").value = "default";
+      setCurMap(e.target.value);
     };
   
-
+    const maps = [0,1,2]
     const simpleCRS = CRS.Simple;
     var imageOv = useRef()
     var mapRef = useRef()
@@ -46,11 +38,17 @@ import {
       }
     }, imageBounds);
 
+  
+
     return (
       <Box align="center" marginTop="1em" fontFamily="Syne">
-        <Button onClick={test}>Tests</Button>
+        <label>
+          <select onChange={handleChange} defaultValue={"default"}>
+            {maps.map((ma) => (<option value={ma}>{ma}</option>))}
+          </select>
+        </label>
         <MapContainer crs={simpleCRS} center={[500,500]} zoom={0} minZoom={-5}  ref={mapRef} style={{height:500+'px'}}>
-          <ImageOverlay url={"maps/0.png"} bounds={imageBounds}  ref={imageOv} ></ImageOverlay>
+          <ImageOverlay url={"maps/"+curMap+".png"} bounds={imageBounds}  ref={imageOv} ></ImageOverlay>
         </MapContainer>
       </Box>
     );
