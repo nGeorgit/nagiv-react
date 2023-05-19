@@ -1,11 +1,11 @@
 import {Navig} from "./navigation.js"
 
 export class MapContrl {
-    constructor()
+    constructor(navig)
     {
       this.curFloor = null
-      this.data = null
-      this.navig = null
+      this.navig = navig
+      this.data = this.navig.data
       this.newPoint = false
       this.pointData = null
       this.start = null //true: set start, false: set end
@@ -17,11 +17,6 @@ export class MapContrl {
 
     }
 
-    setNavig(navig)
-    {
-      this.navig = navig
-      this.data = this.navig.data
-    }
 
     setPlace(place)
     {
@@ -45,21 +40,20 @@ export class MapContrl {
       });
     }
 
-    setMarker(e){
+    setMarker(y,x){
       if (this.newPoint)
       {
-        var latlng = this.map.mouseEventToLatLng(e)
         // L.marker(latlng).addTo(this.map)
         this.newPoint = false
         this.pointData = {
           "floorId": this.curFloor,
           "cords": {
-            "y": Math.floor(this.data.floors[this.curFloor].rows) - Math.floor(latlng.lat/this.data.floors[this.curFloor].nodeSize),
-            "x": Math.floor(latlng.lng/this.data.floors[this.curFloor].nodeSize),
+            "y": Math.floor(this.data.floors[this.curFloor].rows) - Math.floor(y/this.data.floors[this.curFloor].nodeSize),
+            "x": Math.floor(x/this.data.floors[this.curFloor].nodeSize),
           },
           "name": "custome point"
         }
-        console.log(this.pointData)
+        //console.log(this.pointData)
         this.setPlace(this.pointData)
       }
     }

@@ -1,6 +1,8 @@
 import { GraphD } from "./navAlgorithms/dijkstra.js"
 import { pathNode, pathEntryNode } from "./pathNodes.js"
 import { findPath } from "./navAlgorithms/astar.js"
+import { navPath} from "./navNodes/navPath.js"
+import { navPoint} from "./navNodes/navPoint.js"
 
 
 export class Navig {
@@ -23,9 +25,14 @@ export class Navig {
         this.addStartAndEnd()
 
         this.pathD = this.graphD.findShortestPath(this.start.type, this.end.type)
-        //this.navArray = this.makeNav(this.getPathWithNodes(this.pathD))
-        // this.curNode = 0
-        // this.navArray[this.curNode].show()
+        this.navArray = this.makeNav(this.getPathWithNodes(this.pathD))
+        this.curNode = 0
+        this.navArray[this.curNode].show()
+    }
+
+    getCurMapId()
+    {
+        return this.navArray[this.curNode].floorId
     }
 
     getPathWithNodes(pathD)
@@ -37,7 +44,7 @@ export class Navig {
         for(let i = 1; i < pathD.length -1; i++)
         {
             entry = this.data["entries"][pathD[i]]
-            console.log(entry)
+            //console.log(entry)
             nodePath[i] = new pathEntryNode(pathD[i], entry.floorId, entry.cords, entry.level, entry.id, entry.type)
         }
         nodePath[pathD.length - 1] = new pathNode(pathD[pathD.length - 1], this.end.floorId, this.end.cords, this.end.name)
@@ -47,60 +54,60 @@ export class Navig {
 
 
 
-    // makeNav(nodePath)
-    // {
-    //     let navArray = new Array()
+    makeNav(nodePath)
+    {
+        let navArray = new Array()
 
-    //     let curFloor
-    //     let k = 0
-    //     let l = 0
-    //     while (l < nodePath.length - 1)
-    //     {
-
-
-    //         if(k%2==0)
-    //         {
-    //             curFloor = this.data["floors"][nodePath[l].floorId]
-    //             let text = "Go from " + nodePath[l].text + " to " + nodePath[l + 1].text
-    //             navArray.push(new navPath(mapContrl, curFloor.id, curFloor.rows, curFloor.res, curFloor.nodeSize, text, nodePath[l], nodePath[l + 1], curFloor.grid))
-    //             l++
-    //             k++
-    //         } else
-    //         {
-    //             if (nodePath[l].text != "door"){
-    //                 let direction
-    //                 if(nodePath[l].floorId > nodePath[l + 1].floorId)
-    //                 {
-    //                     direction = "down"
-    //                 } else
-    //                 {
-    //                     direction = "up"
-    //                 }
-
-    //                 let nFloors = 0
-    //                 while(nodePath[l].floorId != nodePath[l + 1].floorId)
-    //                 {
-    //                     l++
-    //                     nFloors++
-    //                 }
-    //                 curFloor = this.data["floors"][nodePath[l].floorId]
-    //                 let text = "Go " + direction + " " + nFloors  + " floor/s"
-    //                 navArray.push(new navPoint(mapContrl, curFloor.id, curFloor.rows, curFloor.res, curFloor.nodeSize, text, nodePath[l]))
-    //                 k++
-    //             } else{
-    //                 let text = "Go from " + nodePath[l + 1].text + " to " + nodePath[l + 2].text
-    //                 curFloor = this.data["floors"][nodePath[l + 2].floorId]
-    //                 navArray.push(new navPath(mapContrl, curFloor.id, curFloor.rows, curFloor.res, curFloor.nodeSize, text, nodePath[l + 1], nodePath[l + 2], curFloor.grid))
-
-    //                 l = 2 + l
-    //             }
+        let curFloor
+        let k = 0
+        let l = 0
+        while (l < nodePath.length - 1)
+        {
 
 
-    //         }
-    //     }
-    //     console.log(this.navArray)
-    //     return navArray
-    // }
+            if(k%2==0)
+            {
+                curFloor = this.data["floors"][nodePath[l].floorId]
+                let text = "Go from " + nodePath[l].text + " to " + nodePath[l + 1].text
+                navArray.push(new navPath(curFloor.id, curFloor.rows, curFloor.res, curFloor.nodeSize, text, nodePath[l], nodePath[l + 1], curFloor.grid))
+                l++
+                k++
+            } else
+            {
+                if (nodePath[l].text != "door"){
+                    let direction
+                    if(nodePath[l].floorId > nodePath[l + 1].floorId)
+                    {
+                        direction = "down"
+                    } else
+                    {
+                        direction = "up"
+                    }
+
+                    let nFloors = 0
+                    while(nodePath[l].floorId != nodePath[l + 1].floorId)
+                    {
+                        l++
+                        nFloors++
+                    }
+                    curFloor = this.data["floors"][nodePath[l].floorId]
+                    let text = "Go " + direction + " " + nFloors  + " floor/s"
+                    navArray.push(new navPoint(curFloor.id, curFloor.rows, curFloor.res, curFloor.nodeSize, text, nodePath[l]))
+                    k++
+                } else{
+                    let text = "Go from " + nodePath[l + 1].text + " to " + nodePath[l + 2].text
+                    curFloor = this.data["floors"][nodePath[l + 2].floorId]
+                    navArray.push(new navPath(curFloor.id, curFloor.rows, curFloor.res, curFloor.nodeSize, text, nodePath[l + 1], nodePath[l + 2], curFloor.grid))
+
+                    l = 2 + l
+                }
+
+
+            }
+        }
+        //console.log(this.navArray)
+        return navArray
+    }
 
     addStartAndEnd()
     {
@@ -147,7 +154,7 @@ export class Navig {
         if (this.curNode != this.navArray.length - 1)
         {
             this.curNode++
-            this.navArray[this.curNode].show()
+            //this.navArray[this.curNode].show()
         }
     }
 
@@ -156,7 +163,12 @@ export class Navig {
         if (this.curNode != 0)
         {
             this.curNode--
-            this.navArray[this.curNode].show()
+            //this.navArray[this.curNode].show()
         }
+    }
+
+    showCur()
+    {
+        return this.navArray[this.curNode].show()
     }
 }

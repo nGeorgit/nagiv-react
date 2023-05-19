@@ -9,7 +9,7 @@ export function findPath(matrix, startX, startY, endX, endY){
   return result
 }
 
-function invers(matrix) {
+export function invers(matrix) {
   let invMatr = new Array()
 
   for (let i = 0; i < matrix[0].length; i++){
@@ -41,7 +41,7 @@ function pathTo(node) {
     });
   }
   
-  var astar = {
+  export var astar = {
     /**
     * Perform an A* Search on a graph given a start and end node.
     * @param {Graph} graph
@@ -162,7 +162,7 @@ function pathTo(node) {
    * @param {Object} [options]
    * @param {bool} [options.diagonal] Specifies whether diagonal moves are allowed
    */
-  function Graph(gridIn, options) {
+  export function Graph(gridIn, options) {
     options = options || {};
     this.nodes = [];
     this.diagonal = !!options.diagonal;
