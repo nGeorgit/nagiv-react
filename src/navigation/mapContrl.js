@@ -40,16 +40,16 @@ export class MapContrl {
       });
     }
 
-    setMarker(y,x){
+    setMarker(y,x, curMapId){
       if (this.newPoint)
       {
         // L.marker(latlng).addTo(this.map)
         this.newPoint = false
         this.pointData = {
-          "floorId": this.curFloor,
+          "floorId": curMapId,
           "cords": {
-            "y": Math.floor(this.data.floors[this.curFloor].rows) - Math.floor(y/this.data.floors[this.curFloor].nodeSize),
-            "x": Math.floor(x/this.data.floors[this.curFloor].nodeSize),
+            "y": Math.floor(this.data.floors[curMapId].rows) - Math.floor(y/this.data.floors[curMapId].nodeSize),
+            "x": Math.floor(x/this.data.floors[curMapId].nodeSize),
           },
           "name": "custome point"
         }
